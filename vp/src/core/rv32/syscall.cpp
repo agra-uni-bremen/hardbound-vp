@@ -212,6 +212,16 @@ int sys_sym_mem(iss_syscall_if *core, uint64_t addr, uint64_t size) {
 	return 0;
 }
 
+int sys_setbound_reg(iss_syscall_if *core, size_t index, uint64_t base, size_t bound) {
+	core->set_register_bound(index, base, bound);
+	return 0;
+}
+
+int sys_setbound_mem(iss_syscall_if *core, uint64_t addr, uint64_t base, size_t bound) {
+	core->set_memory_bound(addr, base, bound);
+	return 0;
+}
+
 // TODO: add support for additional syscalls if necessary
 int SyscallHandler::execute_syscall(iss_syscall_if *core, uint64_t n, uint64_t _a0, uint64_t _a1, uint64_t _a2, uint64_t) {
 	// NOTE: when linking with CRT, the most basic example only calls *gettimeofday* and finally *exit*
@@ -249,6 +259,12 @@ int SyscallHandler::execute_syscall(iss_syscall_if *core, uint64_t n, uint64_t _
 
 		case SYS_sym_mem:
 			return sys_sym_mem(core, _a0, _a1);
+
+		case SYS_setbound_reg:
+			return sys_setbound_reg(core, _a0, _a1, _a2);
+
+		case SYS_setbound_mem:
+			return sys_setbound_mem(core, _a0, _a1, _a2);
 
 		case SYS_host_error:
 			SC_REPORT_ERROR("/AGRA/riscv-vp/host-error", "SYS_host_error");

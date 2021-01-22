@@ -227,6 +227,21 @@ struct ISS : public external_interrupt_target, public clint_interrupt_target, pu
             tracer.add(cond, *expr->symbolic);
     };
 
+    void set_register_bound(size_t index, uint64_t base, size_t bound) override {
+        assert(index < 32);
+        assert(base <= UINT32_MAX);
+
+        Word reg = solver.BVC(std::nullopt, (uint32_t)base);
+        reg.set_metadata(base, bound);
+
+        regs.write(index, reg);
+    }
+
+    void set_memory_bound(uint64_t addr, uint64_t base, size_t bound) override {
+        //mem->store_word(saddr, sbase);
+        mem->setbound(addr, base, bound);
+    }
+
     void make_symbolic(size_t index) override {
         std::string name = "x" + std::to_string(index);
         regs.write(index, ctx.getSymbolicWord(name));

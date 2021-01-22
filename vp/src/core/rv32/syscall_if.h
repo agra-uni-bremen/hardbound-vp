@@ -20,6 +20,9 @@ struct iss_syscall_if {
 	virtual void make_symbolic(size_t index) = 0;
 	virtual void make_symbolic(uint32_t addr, size_t size) = 0;
 
+	virtual void set_register_bound(size_t index, uint64_t base, size_t bound) = 0;
+	virtual void set_memory_bound(uint64_t addr, uint64_t base, size_t bound) = 0;
+
 	// virtual uint32_t get_hart_id() = 0;
 };
 

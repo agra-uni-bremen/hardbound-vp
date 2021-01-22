@@ -13,6 +13,8 @@
 #define SYS_exit_group 94
 #define SYS_sym_reg 95
 #define SYS_sym_mem 96
+#define SYS_setbound_reg 97
+#define SYS_setbound_mem 98
 #define SYS_getpid 172
 #define SYS_kill 129
 #define SYS_read 63
