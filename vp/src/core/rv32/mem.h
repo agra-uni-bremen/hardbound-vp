@@ -182,6 +182,10 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		auto caddr = iss.solver.evalValue<uint32_t>(addr->concrete);
 		auto vaddr = v2p(caddr, STORE);
 
+		ensure_pointer_bounds(addr, caddr, num_bytes);
+		if (addr.is_pointer())
+			metadata[caddr] = addr.metadata(); // XXX: Only if transaction dosen't fail?
+
 		_do_transaction(tlm::TLM_WRITE_COMMAND, vaddr, data, num_bytes);
 	}
 
@@ -192,8 +196,19 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		auto caddr = iss.solver.evalValue<uint32_t>(addr->concrete);
 		auto vaddr = v2p(caddr, STORE);
 
+		ensure_pointer_bounds(addr, caddr, num_bytes);
+
 		Concolic data;
 		_do_transaction(tlm::TLM_READ_COMMAND, vaddr, data, num_bytes);
+
+		if (metadata.count(caddr)) {
+			uint64_t base;
+			size_t bound;
+
+			std::tie(base, bound) = metadata[caddr];
+			data.set_metadata(base, bound);
+		}
+
 		return data;
 	}
 
