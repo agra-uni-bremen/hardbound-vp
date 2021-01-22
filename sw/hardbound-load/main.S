@@ -29,6 +29,10 @@ _start:
 la t0, irq_handler
 csrw mtvec, t0
 
+/* Initialize memory at 0x1000 with zero. */
+li t0, 0x1000
+sw zero, 0(t0)
+
 /**
  * Set bounds for register and ensure that this information
  * is propagated when writting and reading from the memory.
