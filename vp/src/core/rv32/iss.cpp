@@ -199,7 +199,7 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::ADDI:
-			regs.write(RD, regs[RS1]->add(I_IMM));
+			regs.write(RD, regs[RS1].add(I_IMM));
 			break;
 
 		case Opcode::SLTI:
