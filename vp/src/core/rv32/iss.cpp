@@ -223,11 +223,11 @@ void ISS::exec_step() {
 			break;
 
 		case Opcode::ADD:
-			regs.write(RD, regs[RS1]->add(regs[RS2]));
+			regs.write(RD, regs[RS1].add(regs[RS2]));
 			break;
 
 		case Opcode::SUB:
-			regs.write(RD, regs[RS1]->sub(regs[RS2]));
+			regs.write(RD, regs[RS1].sub(regs[RS2]));
 			break;
 
 		case Opcode::SLL:
@@ -300,46 +300,46 @@ void ISS::exec_step() {
 		} break;
 
 		case Opcode::SB: {
-			auto addr = regs[RS1]->add(S_IMM);
+			Word addr = regs[RS1].add(S_IMM);
 			mem->store_byte(addr, regs[RS2]);
 		} break;
 
 		case Opcode::SH: {
-			auto addr = regs[RS1]->add(S_IMM);
+			Word addr = regs[RS1].add(S_IMM);
 			trap_check_addr_alignment<2, false>(addr);
 			mem->store_half(addr, regs[RS2]);
 		} break;
 
 		case Opcode::SW: {
-			auto addr = regs[RS1]->add(S_IMM);
+			Word addr = regs[RS1].add(S_IMM);
 			trap_check_addr_alignment<4, false>(addr);
 			mem->store_word(addr, regs[RS2]);
 		} break;
 
 		case Opcode::LB: {
-			auto addr = regs[RS1]->add(I_IMM);
+			Word addr = regs[RS1].add(I_IMM);
 			regs.write(RD, mem->load_byte(addr));
 		} break;
 
 		case Opcode::LH: {
-			auto addr = regs[RS1]->add(I_IMM);
+			Word addr = regs[RS1].add(I_IMM);
 			trap_check_addr_alignment<2, true>(addr);
 			regs.write(RD, mem->load_half(addr));
 		} break;
 
 		case Opcode::LW: {
-			auto addr = regs[RS1]->add(I_IMM);
+			Word addr = regs[RS1].add(I_IMM);
 			trap_check_addr_alignment<4, true>(addr);
                 	regs.write(RD, mem->load_word(addr));
 		} break;
 
 		case Opcode::LBU: {
-			auto addr = regs[RS1]->add(I_IMM);
+			Word addr = regs[RS1].add(I_IMM);
 			regs.write(RD, mem->load_ubyte(addr));
 		} break;
 
 		case Opcode::LHU: {
-			auto addr = regs[RS1]->add(I_IMM);
+			Word addr = regs[RS1].add(I_IMM);
 			trap_check_addr_alignment<2, true>(addr);
 			regs.write(RD, mem->load_uhalf(addr));
 		} break;

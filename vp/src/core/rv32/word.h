@@ -29,7 +29,7 @@ public:
 		return;
 	}
 
-	bool is_pointer(void) {
+	bool is_pointer(void) const {
 		return bound != 0 && base != 0;
 	}
 
@@ -37,7 +37,7 @@ public:
 	 * Accessor functions.
 	 */
 
-	std::tuple<uint64_t, size_t> metadata(void) {
+	std::tuple<uint64_t, size_t> metadata(void) const {
 		return std::make_tuple(base, bound);
 	}
 
@@ -58,37 +58,31 @@ public:
 		return Word(value->zext(width), base, bound);
 	}
 
-	Word sext(klee::Expr::Width width) {
-		return Word(value->sext(width), base, bound);
-	}
-
-#if 0
-	Word operator+(std::shared_ptr<clover::ConcolicValue> other) {
+	Word add(const std::shared_ptr<clover::ConcolicValue> other) const {
 		return Word(value->add(other), base, bound);
 	}
 
-	Word<T> operator+(Word<T>& other) {
+	Word add(const Word other) const {
 		auto base = this->base;
 		auto bound = this->bound;
 		if (other.is_pointer())
 			std::tie(base, bound) = other.metadata();
 
-		return Word<T>(value + other, base, bound);
+		return Word(value->add(other), base, bound);
 	}
 
-	Word<T> operator-(const T& other) {
-		return Word<T>(value - other, base, bound);
+	Word sub(const std::shared_ptr<clover::ConcolicValue> other) const {
+		return Word(value->sub(other), base, bound);
 	}
 
-	Word<T> operator-(Word<T>& other) {
+	Word sub(const Word other) const {
 		auto base = this->base;
 		auto bound = this->bound;
 		if (other.is_pointer())
 			std::tie(base, bound) = other.metadata();
 
-		return Word<T>(value - other, base, bound);
+		return Word(value->sub(other), base, bound);
 	}
-#endif
 
 	/**
 	 * Implicit type conversions
