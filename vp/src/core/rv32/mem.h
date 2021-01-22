@@ -1,5 +1,9 @@
 #pragma once
 
+#include <stdint.h>
+#include <unordered_map>
+#include <tuple>
+
 #include "core/common/dmi.h"
 #include "iss.h"
 #include "mmu.h"
@@ -27,6 +31,9 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
                                  public instr_memory_if,
                                  public data_memory_if,
                                  public mmu_memory_if  {
+	typedef std::tuple<uint64_t, size_t> Metadata;
+	std::unordered_map<uint64_t, Metadata> metadata;
+
 	ISS &iss;
 	std::shared_ptr<bus_lock_if> bus_lock;
 	uint64_t lr_addr = 0;
@@ -50,6 +57,21 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 	        return vaddr;
         return mmu->translate_virtual_to_physical_addr(vaddr, type);
     }
+
+	void ensure_pointer_bounds(Concolic pointer, uint64_t addr, size_t num_bytes) {
+		uint64_t base;
+		size_t bound;
+
+		if (!pointer.is_pointer())
+			return;
+
+		std::tie(base, bound) = pointer.metadata();
+		uint64_t dst = addr + num_bytes;
+
+		/* TODO: Handle pointer overflow */
+		if (addr < base || dst > (uint64_t)(base + bound))
+			raise_trap(EXC_HARDBOUND_FAULT, addr);
+	}
 
 	inline void _do_transaction(tlm::tlm_generic_payload &trans) {
 		sc_core::sc_time local_delay = quantum_keeper.get_local_time();
