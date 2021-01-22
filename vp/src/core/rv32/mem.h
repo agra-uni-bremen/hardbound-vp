@@ -232,6 +232,10 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
         concrete_store_data(addr, value);
     }
 
+    void setbound(uint64_t addr, uint64_t base, size_t bound) {
+        metadata[addr] = std::make_tuple(base, bound);
+    }
+
     void flush_tlb() override {
         mmu->flush_tlb();
     }

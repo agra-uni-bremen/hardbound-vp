@@ -52,6 +52,7 @@ struct data_memory_if {
 	virtual void store_half(Concolic addr, Concolic value) = 0;
 	virtual void store_byte(Concolic addr, Concolic value) = 0;
 
+    virtual void setbound(uint64_t addr, uint64_t base, size_t bound) = 0;
     virtual void flush_tlb() = 0;
 };
 
