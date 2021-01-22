@@ -4,26 +4,27 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <tuple>
+#include <memory>
 
-template <typename T>
+#include <clover/clover.h>
+
 class Word {
 private:
-	T value;
+	std::shared_ptr<clover::ConcolicValue> value;
 	uint64_t base;
 	size_t bound;
 
 public:
-	Word(void)
-	  : value(0), base(0), bound(0) {
-		return;
+	Word() : value(nullptr), base(0), bound(0) {
+		return; // TODO
 	}
 
-	Word(T _value)
+	Word(std::shared_ptr<clover::ConcolicValue> _value)
 	  : value(_value), base(0), bound(0) {
 		return;
 	}
 
-	Word(T _value, uint64_t _base, size_t _bound)
+	Word(std::shared_ptr<clover::ConcolicValue> _value, uint64_t _base, size_t _bound)
 	  : value(_value), base(_base), bound(_bound) {
 		return;
 	}
@@ -45,7 +46,7 @@ public:
 		this->bound = bound;
 	}
 
-	void set_metadata(Word<T> other) {
+	void set_metadata(Word other) {
 		set_metadata(other.base, other.bound);
 	}
 
@@ -53,8 +54,9 @@ public:
 	 * Operator overloading for Hardbound propagation.
 	 */
 
-	Word<T> operator+(const T& other) {
-		return Word<T>(value + other, base, bound);
+#if 0
+	Word operator+(std::shared_ptr<clover::ConcolicValue> other) {
+		return Word(value->add(other), base, bound);
 	}
 
 	Word<T> operator+(Word<T>& other) {
@@ -78,20 +80,19 @@ public:
 
 		return Word<T>(value - other, base, bound);
 	}
+#endif
 
 	/**
 	 * Implicit type conversions
 	 */
 
-	// implicit conversion to underlying type T
-	operator T(void) const {
+	// implicit conversion to underlying ConcolicValue
+	operator std::shared_ptr<clover::ConcolicValue>(void) const {
 		return value;
 	}
 
-	// implicit type conversion to change integer widths
-	template <typename N>
-	operator Word<N>() const {
-		return Word<N>((N)value, base, bound);
+	std::shared_ptr<clover::ConcolicValue> operator->() const {
+		return value;
 	}
 };
 

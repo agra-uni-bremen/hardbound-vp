@@ -30,13 +30,15 @@
 #include <tlm_utils/tlm_quantumkeeper.h>
 #include <systemc>
 
+#include "word.h"
+
 namespace rv32 {
 
 struct RegFile {
 	clover::Solver &solver;
 	static constexpr unsigned NUM_REGS = 32;
 
-	typedef std::shared_ptr<clover::ConcolicValue> RegValue;
+	typedef Word RegValue;
 	std::array<RegValue, NUM_REGS> regs;
 
 	RegFile(clover::Solver &_solver);
