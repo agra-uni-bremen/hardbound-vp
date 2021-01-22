@@ -279,15 +279,15 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 #endif
 
 	Concolic load_word(Concolic addr) override {
-		return symbolic_load_data(addr, sizeof(int32_t))->sext(32);
+		return symbolic_load_data(addr, sizeof(int32_t)).sext(32);
 	}
 
 	Concolic load_half(Concolic addr) override {
-		return symbolic_load_data(addr, sizeof(int16_t))->sext(32);
+		return symbolic_load_data(addr, sizeof(int16_t)).sext(32);
 	}
 
 	Concolic load_byte(Concolic addr) override {
-		return symbolic_load_data(addr, sizeof(int8_t))->sext(32);
+		return symbolic_load_data(addr, sizeof(int8_t)).sext(32);
 	}
 
 	Concolic load_uhalf(Concolic addr) override {

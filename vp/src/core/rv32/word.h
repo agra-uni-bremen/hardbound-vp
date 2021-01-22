@@ -54,6 +54,10 @@ public:
 	 * Operator overloading for Hardbound propagation.
 	 */
 
+	Word sext(klee::Expr::Width width) {
+		return Word(value->sext(width), base, bound);
+	}
+
 	Word zext(klee::Expr::Width width) {
 		return Word(value->zext(width), base, bound);
 	}
