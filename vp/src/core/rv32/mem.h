@@ -183,8 +183,8 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		auto vaddr = v2p(caddr, STORE);
 
 		ensure_pointer_bounds(addr, caddr, num_bytes);
-		if (addr.is_pointer())
-			metadata[caddr] = addr.metadata(); // XXX: Only if transaction dosen't fail?
+		if (data.is_pointer())
+			metadata[caddr] = data.metadata(); // XXX: Only if transaction dosen't fail?
 
 		_do_transaction(tlm::TLM_WRITE_COMMAND, vaddr, data, num_bytes);
 	}
