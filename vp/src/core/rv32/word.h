@@ -54,6 +54,14 @@ public:
 	 * Operator overloading for Hardbound propagation.
 	 */
 
+	Word zext(klee::Expr::Width width) {
+		return Word(value->zext(width), base, bound);
+	}
+
+	Word sext(klee::Expr::Width width) {
+		return Word(value->sext(width), base, bound);
+	}
+
 #if 0
 	Word operator+(std::shared_ptr<clover::ConcolicValue> other) {
 		return Word(value->add(other), base, bound);

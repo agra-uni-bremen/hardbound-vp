@@ -3,6 +3,8 @@
 #include <stdint.h>
 #include <clover/clover.h>
 
+#include "word.h"
+
 namespace rv32 {
 
 struct instr_memory_if {
@@ -35,7 +37,7 @@ struct data_memory_if {
 	virtual void atomic_unlock() = 0;
 #endif
 
-	typedef std::shared_ptr<clover::ConcolicValue> Concolic;
+	typedef Word Concolic;
 
 	virtual void symbolic_store_data(Concolic addr, Concolic data, size_t num_bytes) = 0;
 	virtual Concolic symbolic_load_data(Concolic addr, size_t num_bytes) = 0;
