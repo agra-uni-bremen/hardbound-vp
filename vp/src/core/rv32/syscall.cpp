@@ -285,6 +285,5 @@ int SyscallHandler::execute_syscall(iss_syscall_if *core, uint64_t n, uint64_t _
 			return 0;
 	}
 
-	std::cerr << "unsupported syscall '" << n << "'" << std::endl;
-	throw std::runtime_error("unsupported syscall '" + std::to_string(n) + "'");
+	throw UnsupportedSyscall("unsupported syscall '" + std::to_string(n) + "'");
 }

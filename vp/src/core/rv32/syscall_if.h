@@ -5,6 +5,10 @@
 
 namespace rv32 {
 
+struct UnsupportedSyscall : public std::runtime_error {
+	  using runtime_error::runtime_error;
+};
+
 /* The syscall handler is using this interface to access and control the ISS. */
 struct iss_syscall_if {
 	virtual ~iss_syscall_if() {}

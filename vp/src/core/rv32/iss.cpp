@@ -416,22 +416,32 @@ void ISS::exec_step() {
 		} break;
 
 		case Opcode::ECALL: {
-			if (sys) {
-				sys->execute_syscall(this);
-			} else {
-				switch (prv) {
-					case MachineMode:
-						raise_trap(EXC_ECALL_M_MODE, last_pc);
-						break;
-					case SupervisorMode:
-						raise_trap(EXC_ECALL_S_MODE, last_pc);
-						break;
-					case UserMode:
-						raise_trap(EXC_ECALL_U_MODE, last_pc);
-						break;
-					default:
-						throw std::runtime_error("unknown privilege level " + std::to_string(prv));
+			try {
+				if (sys) {
+					sys->execute_syscall(this);
+					break;
 				}
+			} catch (UnsupportedSyscall &e) {
+				// Raise trap as one would normally if
+				// the syscalls is not intercepted.
+				if (trace) {
+					auto n = regs.read(ISS::get_syscall_register_index());
+					std::cerr << "syscall '" << solver.evalValue<uint32_t>(n->concrete) << "' not intercepted" << std::endl;
+				}
+			}
+
+			switch (prv) {
+				case MachineMode:
+					raise_trap(EXC_ECALL_M_MODE, last_pc);
+					break;
+				case SupervisorMode:
+					raise_trap(EXC_ECALL_S_MODE, last_pc);
+					break;
+				case UserMode:
+					raise_trap(EXC_ECALL_U_MODE, last_pc);
+					break;
+				default:
+					throw std::runtime_error("unknown privilege level " + std::to_string(prv));
 			}
 		} break;
 
