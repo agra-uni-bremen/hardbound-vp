@@ -185,6 +185,8 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		ensure_pointer_bounds(addr, caddr, num_bytes);
 		if (data.is_pointer())
 			metadata[caddr] = data.metadata(); // XXX: Only if transaction dosen't fail?
+		else if (metadata.count(caddr) && !data.is_pointer())
+			metadata.erase(caddr);
 
 		_do_transaction(tlm::TLM_WRITE_COMMAND, vaddr, data, num_bytes);
 	}
