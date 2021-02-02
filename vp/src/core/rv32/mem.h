@@ -182,6 +182,8 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		auto vaddr = v2p(caddr, STORE);
 
 		ensure_pointer_bounds(addr, caddr, num_bytes);
+		_do_transaction(tlm::TLM_WRITE_COMMAND, vaddr, data, num_bytes);
+
 		if (data.is_pointer()) {
 			metadata[caddr] = data.metadata(); // XXX: Only if transaction dosen't fail?
 		} else {
@@ -192,8 +194,6 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 			for (uint64_t a = caddr; a < end; a++)
 				metadata.erase(caddr);
 		}
-
-		_do_transaction(tlm::TLM_WRITE_COMMAND, vaddr, data, num_bytes);
 	}
 
 	Concolic symbolic_load_data(Concolic addr, size_t num_bytes) override {
