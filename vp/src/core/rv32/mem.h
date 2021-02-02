@@ -68,6 +68,13 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		std::tie(base, bound) = pointer.metadata();
 		uint64_t dst = addr + num_bytes;
 
+#if 0
+		std::cerr << __func__ << ":" << std::endl
+			<< "addr: 0x" << std::hex << addr << std::endl
+			<< "base: 0x" << std::hex << base << std::endl
+			<< "bound: " << std::dec << bound << std::endl;
+#endif
+
 		if (addr < base || dst > (uint64_t)(base + bound) || (uint64_t)(base + bound) < base)
 			raise_trap(EXC_HARDBOUND_FAULT, addr);
 	}
