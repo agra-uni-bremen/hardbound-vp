@@ -182,10 +182,16 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
 		auto vaddr = v2p(caddr, STORE);
 
 		ensure_pointer_bounds(addr, caddr, num_bytes);
-		if (data.is_pointer())
+		if (data.is_pointer()) {
 			metadata[caddr] = data.metadata(); // XXX: Only if transaction dosen't fail?
-		else if (metadata.count(caddr) && !data.is_pointer())
-			metadata.erase(caddr);
+		} else {
+			uint64_t end = caddr + num_bytes;
+			assert(end >= caddr); // no overflow
+
+			// Remove all byte addresses in the affected range
+			for (uint64_t a = caddr; a < end; a++)
+				metadata.erase(caddr);
+		}
 
 		_do_transaction(tlm::TLM_WRITE_COMMAND, vaddr, data, num_bytes);
 	}
