@@ -17,7 +17,7 @@
 #include "symbolic_context.h"
 #include "symbolic_explore.h"
 #include "prci.h"
-#include "slip.h"
+#include "torture_slip.h"
 #include "spi.h"
 #include "uart.h"
 #include "oled.hpp"
@@ -131,7 +131,7 @@ int sc_main(int argc, char **argv) {
 	spi1.connect(2, oled);
 	SPI spi2("SPI2");
 	UART uart0("UART0", 3);
-	SLIP slip("SLIP", 4, opt.tun_device);
+	TortureSLIP slip("SLIP", 4, symbolic_context, ifs, opt.pktsize);
 	MaskROM maskROM("MASKROM");
 	DebugMemoryInterface dbg_if("DebugMemoryInterface");
 
