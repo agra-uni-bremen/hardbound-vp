@@ -32,6 +32,9 @@ enum {
 #define IP_VERSION4 (0x40U)
 #define IP_VERSION6 (0x60U)
 
+/* Next header value for ICMPv6 */
+#define PROTNUM_ICMPV6 (58)
+
 TortureSLIP::TortureSLIP(sc_core::sc_module_name, uint32_t irqsrc, SymbolicContext &_ctx,
                          std::ifstream *upper, size_t pktsiz)
   : solver(_ctx.solver), ctx(_ctx.ctx) {
@@ -80,6 +83,9 @@ void TortureSLIP::create_input(std::ifstream *stream, size_t pktsiz) {
 	for (size_t i = 0; i < pktsiz; i++) {
 		// TODO: Properly escape control bytes.
 		// Maybe using Select expression?
+		if (i == 5) {
+			input.push(solver.BVC(std::nullopt, (uint8_t)PROTNUM_ICMPV6));
+		}
 
 		auto byte = ctx.getSymbolicByte("slip_byte" + std::to_string(i));
 		input.push(byte->urem(end));
