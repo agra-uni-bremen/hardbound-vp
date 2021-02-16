@@ -85,10 +85,12 @@ void TortureSLIP::create_input(std::ifstream *stream, size_t pktsiz) {
 		// Maybe using Select expression?
 		if (i == 5) {
 			input.push(solver.BVC(std::nullopt, (uint8_t)PROTNUM_ICMPV6));
+		} else if (i == 39) { // icmp type header
+			input.push(solver.BVC(std::nullopt, (uint8_t)155));
+		} else {
+			auto byte = ctx.getSymbolicByte("slip_byte" + std::to_string(i));
+			input.push(byte->urem(end));
 		}
-
-		auto byte = ctx.getSymbolicByte("slip_byte" + std::to_string(i));
-		input.push(byte->urem(end));
 	}
 
 	/* Mark end of packet */
