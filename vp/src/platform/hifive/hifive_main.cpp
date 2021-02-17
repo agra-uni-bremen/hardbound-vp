@@ -89,12 +89,15 @@ public:
 	std::string tun_device = "tun0";
 
 	size_t pktsize = 45;
+	std::string pktfp = "";
 
 	HifiveOptions(void) {
         	// clang-format off
 		add_options()
 			("enable-can", po::bool_switch(&enable_can), "enable support for CAN peripheral")
-			("tun-device", po::value<std::string>(&tun_device), "tun device used by SLIP");
+			("tun-device", po::value<std::string>(&tun_device), "tun device used by SLIP")
+			("pkt-file", po::value<std::string>(&pktfp), "file containing raw bytes for upper layer")
+			("pkt-size", po::value<size_t>(&pktsize), "size of lower symbolic packet layer");
         	// clang-format on
 	}
 };
@@ -112,6 +115,14 @@ int sc_main(int argc, char **argv) {
 	SimpleBus<2, 14> bus("SimpleBus");
 	CombinedMemoryInterface iss_mem_if("MemoryInterface", core);
 	SyscallHandler sys("SyscallHandler");
+
+	std::ifstream *ifs = nullptr;
+	if (opt.pktfp != "") {
+		ifs = new std::ifstream(opt.pktfp);
+		if (!ifs->is_open())
+			throw std::runtime_error("failed to open " + opt.pktfp);
+	}
+
 
 	std::vector<clint_interrupt_target*> clint_targets {&core};
 
