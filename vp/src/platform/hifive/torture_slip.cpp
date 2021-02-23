@@ -87,6 +87,8 @@ void TortureSLIP::create_input(std::ifstream *stream, size_t pktsiz) {
 			input.push(solver.BVC(std::nullopt, (uint8_t)PROTNUM_ICMPV6));
 		} else if (i == 39) { // icmp type header
 			input.push(solver.BVC(std::nullopt, (uint8_t)155));
+		} else if (i == 40) { // icmp code header
+			input.push(solver.BVC(std::nullopt, (uint8_t)0x01));
 		} else {
 			auto byte = ctx.getSymbolicByte("slip_byte" + std::to_string(i));
 			input.push(byte->urem(end));
