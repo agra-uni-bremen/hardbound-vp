@@ -246,7 +246,7 @@ struct CombinedMemoryInterface : public sc_core::sc_module,
         concrete_store_data(addr, value);
     }
 
-    void setbound(uint64_t addr, uint64_t base, size_t bound) {
+    void setbound(uint64_t addr, uint64_t base, size_t bound) override {
         if (base == 0 && bound == 0)
             metadata.erase(addr);
         metadata[addr] = std::make_tuple(base, bound);
