@@ -239,7 +239,7 @@ struct ISS : public external_interrupt_target, public clint_interrupt_target, pu
 
     void set_memory_bound(uint64_t addr, uint64_t base, size_t bound) override {
         if (trace) {
-            std::cerr << __func__ << ":" << std::endl
+            std::cout << __func__ << ":" << std::endl
                 << "\t" << "addr:  0x" << std::hex << addr  << std::endl
                 << "\t" << "base:  0x" << std::hex << base  << std::endl
                 << "\t" << "bound: "   << std::dec << bound << std::endl;
