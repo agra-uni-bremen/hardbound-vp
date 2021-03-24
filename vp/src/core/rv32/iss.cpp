@@ -30,6 +30,8 @@ using namespace rv32;
 #define REG_INT32_MIN solver.BVC(std::nullopt, (uint32_t)REG_MIN)
 #define REG_ZERO solver.BVC(std::nullopt, (uint32_t)0)
 
+size_t total_instrs = 0;
+
 const char *regnames[] = {
     "zero (x0)", "ra   (x1)", "sp   (x2)", "gp   (x3)", "tp   (x4)", "t0   (x5)", "t1   (x6)", "t2   (x7)",
     "s0/fp(x8)", "s1   (x9)", "a0  (x10)", "a1  (x11)", "a2  (x12)", "a3  (x13)", "a4  (x14)", "a5  (x15)",
@@ -1924,6 +1926,7 @@ void ISS::switch_to_trap_handler(PrivilegeLevel target_mode) {
 
 void ISS::performance_and_sync_update(Opcode::Mapping executed_op) {
     ++total_num_instr;
+    ++total_instrs;
 
 	if (!csrs.mcountinhibit.IR)
 		++csrs.instret.reg;

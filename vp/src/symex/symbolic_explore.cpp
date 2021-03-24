@@ -29,6 +29,8 @@
 static std::filesystem::path *testcase_path = nullptr;
 static size_t errors_found = 0;
 
+extern size_t total_instrs;
+
 static std::optional<std::string>
 dump_input(std::string fn)
 {
@@ -63,6 +65,7 @@ report_handler(const sc_core::sc_report& report, const sc_core::sc_actions& acti
 
 	if (getenv(ERR_EXIT_ENV)) {
 		std::cerr << "Found error, use " << *path << " to reproduce." << std::endl;
+		std::cerr << "Instructions executed: " << total_instrs << std::endl;
 		std::cerr << "Exit on first error set, terminating..." << std::endl;
 		exit(EXIT_FAILURE);
 	}

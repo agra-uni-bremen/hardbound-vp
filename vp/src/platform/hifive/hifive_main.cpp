@@ -50,6 +50,8 @@
 using namespace rv32;
 namespace po = boost::program_options;
 
+extern size_t total_instrs;
+
 class HifiveOptions : public Options {
 public:
 	typedef unsigned int addr_t;
@@ -229,5 +231,7 @@ int sc_main(int argc, char **argv) {
 }
 
 int main(int argc, char **argv) {
-	return symbolic_explore(argc, argv);
+	int r = symbolic_explore(argc, argv);
+	std::cout << "Instructions executed: " << total_instrs << std::endl;
+	return r;
 }
