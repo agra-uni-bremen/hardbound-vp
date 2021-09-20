@@ -5,7 +5,7 @@ SystemC-based Virtual Prototype with symbolic execution support and HardBound pa
 ## About
 
 This is a fork of [symex-vp][symex-vp github] which provides a
-[HardBound][hardbound poi]-based path analyzer for finding spatial
+[HardBound][hardbound doi]-based path analyzer for finding spatial
 memory safety violations in low-level code for constrained devices using
 symbolic execution. The implementation is further described in the 2022
 [ASP-DAC][asp-dac web] publication *Automated Detection of Spatial
