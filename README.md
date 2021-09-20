@@ -14,7 +14,9 @@ Memory Safety Violations for Constrained Devices*.
 ## Installation
 
 Refer to the original symex-vp [cloning][symex-vp clone] and
-[installation][symex-vp install] instructions.
+[installation][symex-vp install] instructions. Software which
+should be checked for spatial memory safety violations must be
+compiled with [hardbound-llvm][hardbound-llvm github].
 
 ## Acknowledgements
 
@@ -45,3 +47,4 @@ copyright headers of individual files for more information.
 [symex-vp install]: https://github.com/agra-uni-bremen/symex-vp/blob/7fd4dbaba2dac28b9c51fd1c3edfa78ac112c668/README.md#installation
 [hardbound doi]: https://doi.org/10.1145/1353535.1346295
 [asp-dac web]: https://aspdac2022.github.io/index.html
+[hardbound-llvm github]: https://github.com/agra-uni-bremen/hardbound-llvm
