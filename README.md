@@ -1,6 +1,6 @@
 # hardbound-vp
 
-A virtual prototype based on [riscv-vp][riscv-vp github] with [symbolic execution][wikipedia symex] support.
+SystemC-based Virtual Prototype with symbolic execution support and HardBound path analyzer.
 
 ## About
 
